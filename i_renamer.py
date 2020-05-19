@@ -21,7 +21,8 @@ def get_date1(dir_name):
     if len(str(month_digit)) == 1:
         month_digit = "0"+str(month_digit)
 
-    year = re.search('\s\d{4}$', dir_name).group(0)
+    year = re.search('\d{4}$', dir_name).group(0)
+    print(year)
     date = str(year)+'-'+str(month_digit)+'-'+str(day)
     location = re.search('^.+?(?=,)', dir_name).group(0)
     dir_name_new = str(date) + ' ' + str(location)
@@ -36,7 +37,8 @@ def get_date2(dir_name):
     if len(str(month_digit)) == 1:
         month_digit = "0"+str(month_digit)
 
-    year = re.search('\s\d{4}$', dir_name).group(0)
+    year = re.search('\d{4}$', dir_name).group(0)
+    print(year)
     date = str(year)+'-'+str(month_digit)+'-'+str(day)
     dir_name_new = str(date)
     return dir_name_new
