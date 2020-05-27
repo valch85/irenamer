@@ -22,7 +22,6 @@ def get_date1(dir_name):
         month_digit = "0"+str(month_digit)
 
     year = re.search('\d{4}$', dir_name).group(0)
-    print(year)
     date = str(year)+'-'+str(month_digit)+'-'+str(day)
     location = re.search('^.+?(?=,)', dir_name).group(0)
     dir_name_new = str(date) + ' ' + str(location)
