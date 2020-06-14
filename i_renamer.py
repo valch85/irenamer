@@ -12,71 +12,78 @@ from os import listdir
 from os.path import isdir, join
 
 
-def get_date1(dir_name):
+def get_date_with_place(dir_name):
     day = re.search('[a-zA-Z0-9_ ]*,\s(\d{1,2}).*', dir_name).group(1)
     if len(str(day)) == 1:
-        day = "0"+str(day)
-    month_letter = re.search('January|February|March|April|May|June|July|August|September|October|November|December', dir_name).group(0)
+        day = "0" + str(day)
+    month_letter = re.search('January|February|March|April|May|June|July|August|September|October|November|December',
+                             dir_name).group(0)
     month_digit = list(calendar.month_abbr).index(month_letter[:3])
     if len(str(month_digit)) == 1:
-        month_digit = "0"+str(month_digit)
+        month_digit = "0" + str(month_digit)
 
     year = re.search('\d{4}$', dir_name).group(0)
-    date = str(year)+'-'+str(month_digit)+'-'+str(day)
+    date = str(year) + '-' + str(month_digit) + '-' + str(day)
     location = re.search('^.+?(?=,)', dir_name).group(0)
     dir_name_new = str(date) + ' ' + str(location)
     return dir_name_new
 
-def get_date2(dir_name):
+
+def get_date_no_place(dir_name):
     day = re.search('^\d{1,2}', dir_name).group(0)
     if len(str(day)) == 1:
-        day = "0"+str(day)
-    month_letter = re.search('^\d{1,2}\s(<January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$', dir_name).group(1)
+        day = "0" + str(day)
+    month_letter = re.search(
+        '^\d{1,2}\s(<January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$',
+        dir_name).group(1)
     month_digit = list(calendar.month_abbr).index(month_letter[:3])
     if len(str(month_digit)) == 1:
-        month_digit = "0"+str(month_digit)
+        month_digit = "0" + str(month_digit)
 
     year = re.search('\d{4}$', dir_name).group(0)
-    print(year)
-    date = str(year)+'-'+str(month_digit)+'-'+str(day)
+    date = str(year) + '-' + str(month_digit) + '-' + str(day)
     dir_name_new = str(date)
     return dir_name_new
 
-def rename1(dir_name):
-    data_file = Path(folder_path + dir_name)
-    data_file.rename(folder_path + str(get_date1(dir_name)))
 
-def rename2(dir_name):
+def rename_with_place(dir_name):
     data_file = Path(folder_path + dir_name)
-    data_file.rename(folder_path + str(get_date2(dir_name)))
+    data_file.rename(folder_path + str(get_date_with_place(dir_name)))
+
+
+def rename_no_place(dir_name):
+    data_file = Path(folder_path + dir_name)
+    data_file.rename(folder_path + str(get_date_no_place(dir_name)))
+
 
 # check is the path to directory defined
 # if defined get it
 if len(sys.argv) < 2:
-        print('Not all variables defined')
-        exit(1)
+    print('Not all variables defined')
+    exit(1)
 else:
     folder_path = sys.argv[1]
 
-# get all directories name
+# get all directories name before rename
 onlydir = [f for f in listdir(folder_path) if isdir(join(folder_path, f))]
 print(onlydir)
 
-# iterate over directories
+# iterate over directories and check
 for i in onlydir:
-    pattern1 = re.compile('^.*,\s\d{1,2}\s(?:<January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$')
-    pattern2 = re.compile('^\d{1,2}\s(?:<January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$')
-    if pattern1.match(i):
-        rename1(str(i))
-    elif pattern2.match(i):
-        rename2(str(i))
+    pattern_with_place = re.compile(
+        '^.*,\s\d{1,2}\s(?:<January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$')
+    pattern_no_place = re.compile(
+        '^\d{1,2}\s(?:<January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$')
+    if pattern_with_place.match(i):
+        rename_with_place(str(i))
+    elif pattern_no_place.match(i):
+        rename_no_place(str(i))
     else:
         print('Dirrectory ' + i + ' is not in a iPhoto format')
 
+# print separater
+print('==== result ====')
+
+# get all directories name after rename
 onlydir = [f for f in listdir(folder_path) if isdir(join(folder_path, f))]
 print(onlydir)
-
-
-
-
-
