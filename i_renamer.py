@@ -28,7 +28,7 @@ def get_date1(dir_name):
     return dir_name_new
 
 def get_date2(dir_name):
-    day = re.search('^\d{1,2}\s', dir_name).group(0)
+    day = re.search('^\d{1,2}', dir_name).group(0)
     if len(str(day)) == 1:
         day = "0"+str(day)
     month_letter = re.search('^\d{1,2}\s(<January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$', dir_name).group(1)
