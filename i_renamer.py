@@ -34,7 +34,7 @@ def get_date_no_place(dir_name):
     if len(str(day)) == 1:
         day = "0" + str(day)
     month_letter = re.search(
-        '^\d{1,2}\s(<January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$',
+        '^\d{1,2}\s(January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$',
         dir_name).group(1)
     month_digit = list(calendar.month_abbr).index(month_letter[:3])
     if len(str(month_digit)) == 1:
@@ -71,9 +71,9 @@ print(onlydir)
 # iterate over directories and check
 for i in onlydir:
     pattern_with_place = re.compile(
-        '^.*,\s\d{1,2}\s(?:<January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$')
+        '^.*,\s\d{1,2}\s(January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$')
     pattern_no_place = re.compile(
-        '^\d{1,2}\s(?:<January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$')
+        '^\d{1,2}\s(January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}$')
     if pattern_with_place.match(i):
         rename_with_place(str(i))
     elif pattern_no_place.match(i):
