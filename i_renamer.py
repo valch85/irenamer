@@ -25,7 +25,7 @@ def get_date_with_place(dir_name):
     year = re.search('\d{4}$', dir_name).group(0)
     date = str(year) + '-' + str(month_digit) + '-' + str(day)
     location_raw = re.search('^.+?(?=,)', dir_name).group(0)
-    location = re.sub('Kyiv', 'Kiev', location_raw)
+    location = re.sub('Home', 'Kyiv', location_raw)
     dir_name_new = str(date) + ' ' + str(location)
     return dir_name_new
 
